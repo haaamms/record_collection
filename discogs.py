@@ -1,5 +1,6 @@
-import os, time, json, re, discogs_client
+import os, time, json, re, discogs_client, duckdb
 from discogs_client.exceptions import HTTPError
+import pandas as pd
 from dotenv import load_dotenv
 
 
@@ -151,16 +152,16 @@ def fetch_rows():
 def main():
     rows = fetch_rows()
     df = pd.DataFrame(rows)
+    con = duckdb.connect()
+    con.execute("CREATE TABLE collection AS SELECT * FROM df")
+    
+    #   checks
+    print(con.execute("SELECT COUNT(*) FROM collection").fetchone())
+    print(con.execute("SELECT * FROM collection LIMIT 5").df())
+    
 
-    # normalize whitespace in object columns
-    for c in df.columns:
-        if df[c].dtype == object:
-            df[c] = df[c].apply(clean_text)
+    print(f"fetched {len(rows)} rows")
 
-
-    print(f"fetched {len(df)} rows")
-    print(df.head(5))
-    print(df.dtypes)
 
 if __name__ == "__main__":
     main()
