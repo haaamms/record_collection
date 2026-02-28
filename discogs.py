@@ -16,13 +16,6 @@ SLEEP_BETWEEN_CALLS = 0.25
 # Fetch full release to get exact release date & identifiers (set False for speed)
 INCLUDE_FULL_RELEASE = True
 
-# Output path
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-OUT_DIR  = os.path.join(BASE_DIR, "record_database", "data_exports")
-os.makedirs(OUT_DIR, exist_ok=True)
-OUT_CSV  = os.path.join(OUT_DIR, "discogs_collection_min.csv")
-
-
 def clean_text(s):
     if s is None:
         return ""
@@ -164,17 +157,10 @@ def main():
         if df[c].dtype == object:
             df[c] = df[c].apply(clean_text)
 
-    # set deterministic column order
-    cols = [
-        "release_id","master_id","artist","title","date_added",
-        "variant","format","release_date","country","label","catno",
-        "genres","styles","barcode","resource_url"
-    ]
-    df = df[[c for c in cols if c in df.columns]]
 
-    df.to_csv(OUT_CSV, index=False, encoding="utf-8")
-    print(f"Wrote {len(df)} rows → {OUT_CSV}")
+    print(f"fetched {len(df)} rows")
     print(df.head(5))
     print(df.dtypes)
+
 if __name__ == "__main__":
     main()
