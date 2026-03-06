@@ -1,5 +1,6 @@
 import os, time, json, re, discogs_client, duckdb
 from discogs_client.exceptions import HTTPError
+from datetime import datetime
 import pandas as pd
 from dotenv import load_dotenv
 
@@ -92,6 +93,7 @@ def fetch_rows():
     user = d.user(USERNAME)
     folder = user.collection_folders[0]  # "All"
     total  = folder.releases.count
+    loaded_at = datetime.now()
     print(f"User {user.username} - items: {total}")
 
     rows = []
@@ -139,6 +141,7 @@ def fetch_rows():
             "catno":           "|".join([l.get("catno","") for l in (labels or []) if isinstance(l, dict) and l.get("catno")]),
             "genres":          "|".join(genres or []),
             "styles":          "|".join(styles or []),
+            "loaded_at":       loaded_at,
 #            "barcode":         first_barcode(identifiers),
 #            "resource_url":    clean_text(pick("resource_url", full, basic, "")),
         }
