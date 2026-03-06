@@ -3,6 +3,7 @@ from discogs_client.exceptions import HTTPError
 import pandas as pd
 from dotenv import load_dotenv
 
+import db
 
 # ---------- CONFIG ----------
 load_dotenv()
@@ -156,11 +157,13 @@ def main():
     con.execute("CREATE TABLE collection AS SELECT * FROM df")
     
     #   checks
-    print(con.execute("SELECT COUNT(*) FROM collection").fetchone())
-    print(con.execute("SELECT * FROM collection LIMIT 5").df())
+    #   print(con.execute("SELECT COUNT(*) FROM collection").fetchone())
+    #   print(con.execute("SELECT * FROM collection LIMIT 5").df())
     
 
     print(f"fetched {len(rows)} rows")
+
+    db.load_rows()
 
 
 if __name__ == "__main__":
