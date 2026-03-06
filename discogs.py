@@ -163,7 +163,7 @@ def main():
 
     print(f"fetched {len(rows)} rows")
 
-    db.load_rows()
+    db.load_rows(rows)
 
 
 if __name__ == "__main__":
