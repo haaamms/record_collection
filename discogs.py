@@ -69,8 +69,8 @@ def summarize_formats(fmt_list):
 
     # Variant = unique bits joined
     seen = set()
-    variant = "|".join([b for b in variant_bits if not (b in seen or seen.add(b))]) or ""
-    return "|".join(parts), clean_text(variant)
+    variant = ", ".join([b for b in variant_bits if not (b in seen or seen.add(b))]) or ""
+    return ", ".join(parts), clean_text(variant)
 
 
 def first_barcode(identifiers):
